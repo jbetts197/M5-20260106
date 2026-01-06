@@ -33,6 +33,12 @@
         <mxCell id="SB8zKPZ6vFkJBYjEVViX-14" edge="1" parent="1" source="SB8zKPZ6vFkJBYjEVViX-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="SB8zKPZ6vFkJBYjEVViX-13">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="T67WCMqQT1Bawcfca2Xq-1" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/analytics/Power_BI_Embedded.svg;" value="" vertex="1">
+          <mxGeometry height="68" width="51" x="874.5" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="T67WCMqQT1Bawcfca2Xq-2" edge="1" parent="1" source="SB8zKPZ6vFkJBYjEVViX-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.471;entryY=1.029;entryDx=0;entryDy=0;entryPerimeter=0;" target="T67WCMqQT1Bawcfca2Xq-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
