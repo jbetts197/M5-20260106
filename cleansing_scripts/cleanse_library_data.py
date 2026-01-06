@@ -17,9 +17,23 @@ def is_valid_date(date_str):
     except (ValueError, TypeError):
         return False
     
-def cleanse_library_data(input_file_path, output_file_path):
+def cleanse_library_customers_data(input_file_path, output_file_path):
     """
-    Main function which clanses library data
+    Main function which cleanses library customers data
+    """
+    try:
+        input_df = pd.read_csv(input_file_path)
+        print("Step 1: Removing empty and duplicated rows")
+        result_df = input_df.dropna(how='all').drop_duplicates()
+        print("Step 2: Standardise text space in book title")
+        result_df['Customer Name'].str.strip()
+        result_df.to_csv(output_file_path, index=False)
+    except Exception as e:
+        print(e)
+
+def cleanse_library_books_data(input_file_path, output_file_path):
+    """
+    Main function which clanses library books data
     """
     try:
         input_df = pd.read_csv(input_file_path)
@@ -38,7 +52,7 @@ def cleanse_library_data(input_file_path, output_file_path):
         result_df['Books'] = result_df['Books'].str.strip()
         print("Exporting to valid records to CSV")
         valid_data = result_df[result_df['valid_record'] == True]
-        valid_data.drop(columns=['valid_record']).to_csv("../output_cleansed_data/cleansed_system_book.csv", index=False)
+        valid_data.drop(columns=['valid_record']).to_csv(output_file_path, index=False)
     except Exception as e:
         print(e)
 
@@ -46,10 +60,14 @@ def main():
     """
     Main function to run the script
     """
-    input_file = "./raw_data/03_Library Systembook.csv"
-    output_file = "./output_cleansed_data/cleansed_system_book.csv"
-    cleanse_library_data(input_file, output_file)
-    print("Starting data cleanse activity...")
+    customers_input_file = "./raw_data/03_Library SystemCustomers.csv"
+    customers_output_file = "./output_cleansed_data/cleansed_system_customers.csv"
+    print("Starting books data cleanse")
+    cleanse_library_customers_data(customers_input_file, customers_output_file)
+    books_input_file = "./raw_data/03_Library Systembook.csv"
+    books_output_file = "./output_cleansed_data/cleansed_system_book.csv"
+    print("Starting customers data cleanse")
+    cleanse_library_books_data(books_input_file, books_output_file)
     print("Data cleansing completed!")
 
 if __name__ == "__main__":
