@@ -12,4 +12,5 @@ A library wants to improve their current quality analysis. They are looking for 
 
 - Diagrams directory stores diagrams
 - Raw Data is the library input data
-- cleanse_data.ipynb is a juypter notebook which cleanses the input data
+- Juypter notebooks has the notebooks
+- Output cleansed data has the cleansed data
