@@ -1,0 +1,39 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0" version="29.2.9">
+  <diagram name="Page-1" id="TLEj9XC_eDYCQ2h9xT5u">
+    <mxGraphModel dx="938" dy="506" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="SB8zKPZ6vFkJBYjEVViX-5" edge="1" parent="1" source="SB8zKPZ6vFkJBYjEVViX-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SB8zKPZ6vFkJBYjEVViX-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Raw Data" vertex="1">
+          <mxGeometry height="60" width="120" x="80" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="SB8zKPZ6vFkJBYjEVViX-10" edge="1" parent="1" source="SB8zKPZ6vFkJBYjEVViX-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="SB8zKPZ6vFkJBYjEVViX-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SB8zKPZ6vFkJBYjEVViX-4" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="Staging Data&lt;div&gt;Storage&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="100" x="280" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="SB8zKPZ6vFkJBYjEVViX-12" edge="1" parent="1" source="SB8zKPZ6vFkJBYjEVViX-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="SB8zKPZ6vFkJBYjEVViX-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SB8zKPZ6vFkJBYjEVViX-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Validate Data" vertex="1">
+          <mxGeometry height="60" width="120" x="460" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="SB8zKPZ6vFkJBYjEVViX-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Transform Data" vertex="1">
+          <mxGeometry height="60" width="120" x="650" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="SB8zKPZ6vFkJBYjEVViX-13" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="Gold Data&lt;div&gt;Storage&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="100" x="850" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="SB8zKPZ6vFkJBYjEVViX-14" edge="1" parent="1" source="SB8zKPZ6vFkJBYjEVViX-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="SB8zKPZ6vFkJBYjEVViX-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
