@@ -17,5 +17,6 @@ A library wants to improve their current quality analysis. They are looking for 
 
 - Diagrams directory stores diagrams
 - Raw Data is the library input data
-- Juypter notebooks has the notebooks
+- Juypter notebooks has the notebooks used to describe cleansing/transformations
+- Cleansing Scripts has scripts which perform the cleansing as a script (rather than notebook)
 - Output cleansed data has the cleansed data
