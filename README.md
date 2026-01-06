@@ -8,6 +8,11 @@ A library wants to improve their current quality analysis. They are looking for 
 - Create Architecture Diagram
 - Create Project Plan / KanBan Board
 
+**User Story:**
+- A customer borrows a book
+- A customer returns a book
+- A customer has an allocated amount of time allowed to borrow the book
+
 **Repo structure:**
 
 - Diagrams directory stores diagrams
