@@ -1,0 +1,73 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0" version="29.2.9">
+  <diagram id="wFE0QG_FPsp0jaGvCLVb" name="Page-1">
+    <mxGraphModel dx="915" dy="595" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="_5mSTuPxr-ZiKRkBDSY7-1" parent="1" style="swimlane;fontStyle=2;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=1;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=none;fontFamily=Permanent Marker;fontSize=16;points=[];verticalAlign=top;stackBorder=0;resizable=1;strokeWidth=2;sketch=1;disableMultiStroke=1;" value="" vertex="1">
+          <mxGeometry height="760" width="540" x="140" y="40" as="geometry" />
+        </mxCell>
+        <object label="TO DO" status="New" id="_5mSTuPxr-ZiKRkBDSY7-2">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-1" style="swimlane;strokeWidth=2;fontFamily=Permanent Marker;html=0;startSize=1;verticalAlign=bottom;spacingBottom=5;points=[];childLayout=stackLayout;stackBorder=20;stackSpacing=20;resizeLast=0;resizeParent=1;horizontalStack=0;collapsible=0;sketch=1;strokeColor=none;fillStyle=solid;fillColor=#A0522D;" vertex="1">
+            <mxGeometry height="732" width="180" y="28" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="&lt;font style=&quot;&quot;&gt;Scoping (understand the user stories)&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-weight: normal; font-style: italic; font-size: 10px;&quot;&gt;%status%&lt;/font&gt;&lt;/div&gt;" placeholders="1" id="4ZZkJJo3bnvBmDuINRBz-3">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-2" style="whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#ffe6cc;fontStyle=1;spacingTop=0;rounded=1;arcSize=9;points=[];fontFamily=Permanent Marker;hachureGap=8;fillWeight=1;strokeColor=#d79b00;" vertex="1">
+            <mxGeometry height="80" width="140" x="20" y="21" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Design the data model&lt;br&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;i&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;%status%&lt;/font&gt;&lt;/i&gt;&lt;/span&gt;" placeholders="1" id="4ZZkJJo3bnvBmDuINRBz-7">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-2" style="whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#ffe6cc;fontStyle=1;spacingTop=0;rounded=1;arcSize=9;points=[];fontFamily=Permanent Marker;hachureGap=8;fillWeight=1;strokeColor=#d79b00;" vertex="1">
+            <mxGeometry height="80" width="140" x="20" y="121" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Decide on technology to use for storage&lt;br&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;i&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;%status%&lt;/font&gt;&lt;/i&gt;&lt;/span&gt;" placeholders="1" id="4ZZkJJo3bnvBmDuINRBz-1">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-2" style="whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#ffe6cc;fontStyle=1;spacingTop=0;rounded=1;arcSize=9;points=[];fontFamily=Permanent Marker;hachureGap=8;fillWeight=1;strokeColor=#d79b00;" vertex="1">
+            <mxGeometry height="80" width="140" x="20" y="221" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Determine tech for orchestration&lt;br&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;i&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;%status%&lt;/font&gt;&lt;/i&gt;&lt;/span&gt;" placeholders="1" id="4ZZkJJo3bnvBmDuINRBz-5">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-2" style="whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#ffe6cc;fontStyle=1;spacingTop=0;rounded=1;arcSize=9;points=[];fontFamily=Permanent Marker;hachureGap=8;fillWeight=1;strokeColor=#d79b00;" vertex="1">
+            <mxGeometry height="80" width="140" x="20" y="321" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Define unit tests (What am I expecting)&lt;br&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;i&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;%status%&lt;/font&gt;&lt;/i&gt;&lt;/span&gt;" placeholders="1" id="4ZZkJJo3bnvBmDuINRBz-6">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-2" style="whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#ffe6cc;fontStyle=1;spacingTop=0;rounded=1;arcSize=9;points=[];fontFamily=Permanent Marker;hachureGap=8;fillWeight=1;strokeColor=#d79b00;" vertex="1">
+            <mxGeometry height="80" width="140" x="20" y="421" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Write a process to extract raw data to staging&lt;br&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;i&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;%status%&lt;/font&gt;&lt;/i&gt;&lt;/span&gt;" placeholders="1" id="_5mSTuPxr-ZiKRkBDSY7-3">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-2" style="whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#ffe6cc;fontStyle=1;spacingTop=0;rounded=1;arcSize=9;points=[];fontFamily=Permanent Marker;hachureGap=8;fillWeight=1;strokeColor=#d79b00;" vertex="1">
+            <mxGeometry height="80" width="140" x="20" y="521" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Write a process to cleanse and transform data&lt;br&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;i&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;%status%&lt;/font&gt;&lt;/i&gt;&lt;/span&gt;" placeholders="1" id="4ZZkJJo3bnvBmDuINRBz-2">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-2" style="whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#ffe6cc;fontStyle=1;spacingTop=0;rounded=1;arcSize=9;points=[];fontFamily=Permanent Marker;hachureGap=8;fillWeight=1;strokeColor=#d79b00;" vertex="1">
+            <mxGeometry height="80" width="140" x="20" y="621" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="DOING" status="In progress" id="_5mSTuPxr-ZiKRkBDSY7-6">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-1" style="swimlane;strokeWidth=2;fontFamily=Permanent Marker;html=0;startSize=1;verticalAlign=bottom;spacingBottom=5;points=[];childLayout=stackLayout;stackBorder=20;stackSpacing=20;resizeLast=0;resizeParent=1;horizontalStack=0;collapsible=0;sketch=1;strokeColor=none;fillStyle=solid;fillColor=#006600;" vertex="1">
+            <mxGeometry height="732" width="180" x="180" y="28" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Task 4&lt;br&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;i&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;%status%&lt;/font&gt;&lt;/i&gt;&lt;/span&gt;" placeholders="1" id="_5mSTuPxr-ZiKRkBDSY7-7">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-6" style="whiteSpace=wrap;html=1;strokeWidth=2;fillColor=swimlane;fontStyle=1;spacingTop=0;rounded=1;arcSize=9;points=[];sketch=1;fontFamily=Permanent Marker;hachureGap=8;fillWeight=1;" vertex="1">
+            <mxGeometry height="80" width="140" x="20" y="21" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="DONE" status="Completed" id="_5mSTuPxr-ZiKRkBDSY7-9">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-1" style="swimlane;strokeWidth=2;fontFamily=Permanent Marker;html=0;startSize=1;verticalAlign=bottom;spacingBottom=5;points=[];childLayout=stackLayout;stackBorder=20;stackSpacing=20;resizeLast=0;resizeParent=1;horizontalStack=0;collapsible=0;sketch=1;strokeColor=none;fillStyle=solid;fillColor=#1BA1E2;" vertex="1">
+            <mxGeometry height="732" width="180" x="360" y="28" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Task 6&lt;br&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;i&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;%status%&lt;/font&gt;&lt;/i&gt;&lt;/span&gt;" placeholders="1" id="_5mSTuPxr-ZiKRkBDSY7-10">
+          <mxCell parent="_5mSTuPxr-ZiKRkBDSY7-9" style="whiteSpace=wrap;html=1;strokeWidth=2;fillColor=swimlane;fontStyle=1;spacingTop=0;rounded=1;arcSize=9;points=[];sketch=1;fontFamily=Permanent Marker;hachureGap=8;fillWeight=1;" vertex="1">
+            <mxGeometry height="80" width="140" x="20" y="21" as="geometry" />
+          </mxCell>
+        </object>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
