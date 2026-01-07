@@ -21,3 +21,6 @@ A library wants to improve their current quality analysis. They are looking for 
 - Cleansing Scripts has scripts which perform the cleansing as a script (rather than notebook)
 - Cleansing Scripts has `pytest` test in `test_functions.py`
 - Output cleansed data has the cleansed and enriched data
+
+**Execution instructions:**
+`python .\cleanse_library_data.py --customers-input "../raw_data/03_Library SystemCustomers.csv" --customers-output "../output_cleansed_data/cleansed_system_customers.csv"`
