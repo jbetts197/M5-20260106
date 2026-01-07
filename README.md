@@ -33,3 +33,5 @@ A library wants to improve their current quality analysis. They are looking for 
 - To execute the tests, run the following command from the `main_scripts` directory:
 - `$env:AI_API_KEY="sk-xxxx"` (to set API key variable)
 - `python unittest_functions.py`
+
+- To run the juypter notebook that demos hugging face, you will require a .env file with the `AI_API_KEY`. This can be set by configuring `.vscode/settings.json`. These files have been excluded from git using gitignore.
