@@ -6,6 +6,7 @@ import pandas as pd
 import re
 from datetime import datetime
 import os
+import argparse
 
 def calculate_date_difference(date1, date2):
     """
@@ -92,12 +93,16 @@ def main():
     """
     Main function to run the script
     """
+    parser = argparse.ArgumentParser(description="Library data cleansing")
+    parser.add_argument("--customers-input", required=True, help="Path to customers input file")
+    parser.add_argument("--customers-output", required=True, help="Path to customers output file")
+    args = parser.parse_args()
     customers_input_file = "./raw_data/03_Library SystemCustomers.csv"
     customers_output_file = "./output_cleansed_data/cleansed_system_customers.csv"
     print("Starting books data cleanse")
-    cleanse_library_customers_data(customers_input_file, customers_output_file)
-    books_input_file = "./raw_data/03_Library Systembook.csv"
-    books_output_file = "./output_cleansed_data/cleansed_system_book.csv"
+    cleanse_library_customers_data(args.customers_input, args.customers_output)
+    books_input_file = "../raw_data/03_Library Systembook.csv"
+    books_output_file = "../output_cleansed_data/cleansed_system_book.csv"
     print("Starting customers data cleanse")
     cleanse_library_books_data(books_input_file, books_output_file)
     print("Data cleansing completed!")
