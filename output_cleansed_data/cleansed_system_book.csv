@@ -1,20 +1,24 @@
-Id,Books,Book checkout,Book Returned,Days allowed to borrow,Customer ID,valid_record,days_borrowed
-1.0,Catcher in the Rye,20/02/2023,25/02/2023,2 weeks,1.0,True,5
-2.0,Lord of the rings the two towers,24/03/2023,21/03/2023,2 weeks,2.0,True,-3
-3.0,Lord of the rings the return of the kind,29/03/2023,25/03/2023,2 weeks,3.0,True,-4
-4.0,The hobbit,02/04/2023,25/03/2023,2 weeks,4.0,True,-8
-5.0,Dune,02/04/2023,25/03/2023,2 weeks,5.0,True,-8
-6.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,True,29
-7.0,IT,10/04/2063,03/04/2023,2 weeks,6.0,True,-14617
-8.0,Misery,15/04/2023,03/04/2023,2 weeks,7.0,True,-12
-9.0,Catch 22,15/04/2023,16/04/2023,2 weeks,7.0,True,1
-10.0,Animal Farm,20/04/2023,24/04/2023,2 weeks,2.0,True,4
-11.0,1984,23/04/2023,27/04/2023,2 weeks,8.0,True,4
-12.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,True,29
-13.0,East of Eden,30/04/2023,05/05/2023,2 weeks,2.0,True,5
-14.0,America Is in the Heart,01/05/2023,07/05/2023,2 weeks,3.0,True,6
-15.0,Wuthering Heights,01/05/2023,10/05/2023,2 weeks,9.0,True,9
-16.0,Dark Tales,15/05/2023,01/06/2023,2 weeks,2.0,True,17
-18.0,Les Miserables,03/06/2023,07/06/2023,2 weeks,5.0,True,4
-19.0,Dracula,10/06/2023,10/07/2023,2 weeks,10.0,True,30
-20.0,Frankenstein,01/06/2023,20/06/2023,2 weeks,2.0,True,19
+Id,Books,Book checkout,Book Returned,Days allowed to borrow,Customer ID,valid_record,days_borrowed,book_description
+1.0,Catcher in the Rye,20/02/2023,25/02/2023,2 weeks,1.0,True,5,"**Holden Caulfield, a disillusioned teenager expelled from prep school, wanders New York City for three days. His cynical narration critiques adult ""phoniness"" while revealing his deep fear of growing up and desire to protect childhood innocence, symbolized by the book's title.** (45 words"
+2.0,Lord of the rings the two towers,24/03/2023,21/03/2023,2 weeks,2.0,True,-3,"Here's a concise description of *The Lord of the Rings: The Two Towers*:
+
+> The Fellowship is shattered. Frodo and Sam journey towards Mordor with the treacherous Gollum as their guide. Aragorn, Legolas, and Gimli pursue the captured Merry and Pippin"
+3.0,Lord of the rings the return of the kind,29/03/2023,25/03/2023,2 weeks,3.0,True,-4,"Here's a concise description for *The Return of the King*:
+
+> Frodo and Sam struggle towards Mount Doom in Mordor to destroy the One Ring, pursued by Gollum. Meanwhile, Gandalf and Aragorn lead the defense of Gondor against Sauron's forces in"
+4.0,The hobbit,02/04/2023,25/03/2023,2 weeks,4.0,True,-8,"Reluctant hobbit Bilbo Baggins joins a quest with dwarves and wizard Gandalf to reclaim treasure guarded by the dragon Smaug, discovering a powerful ring along the way."
+5.0,Dune,02/04/2023,25/03/2023,2 weeks,5.0,True,-8,"Frank Herbert's *Dune* is an epic science fiction saga set on the desert planet Arrakis, the sole source of the universe's most valuable substance, the spice melange. It follows young Paul Atreides as his noble house is betrayed. Paul must survive among the Fremen"
+6.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,True,29,"Louisa May Alcott's classic novel follows the lives of the four March sisters—Meg, Jo, Beth, and Amy—as they navigate adolescence, poverty, love, loss, and societal expectations in Civil War-era New England, exploring themes of family, personal growth, and finding one's"
+7.0,IT,10/04/2063,03/04/2023,2 weeks,6.0,True,-14617,"Stephen King's *IT* is a horror epic about an ancient evil entity that awakens every 27 years in Derry, Maine, preying on children's deepest fears, often manifesting as Pennywise the Dancing Clown. A group of outcast kids, the Losers'"
+8.0,Misery,15/04/2023,03/04/2023,2 weeks,7.0,True,-12,"A famous author crashes near the isolated home of his ""number one fan,"" Annie Wilkes. When she learns he killed off her favorite character, her obsessive devotion curdles into violent rage. He becomes her captive, tortured and forced to write a new novel resurrecting Misery while fighting to"
+9.0,Catch 22,15/04/2023,16/04/2023,2 weeks,7.0,True,1,"A satirical WWII novel about bombardier Yossarian trapped by the absurd ""Catch-22"": a bureaucratic rule proving insanity (wanting to avoid deadly missions) is sanity, but requesting exemption for insanity proves sanity, forcing him to fly. It hilariously and horrifyingly exposes"
+10.0,Animal Farm,20/04/2023,24/04/2023,2 weeks,2.0,True,4,"**Concise Description:** George Orwell's *Animal Farm* is a satirical allegory where farm animals overthrow their human owner, aiming to create an equal society. However, the pigs seize power, becoming increasingly tyrannical and betraying the revolution's ideals, exposing the corruption of power and"
+11.0,1984,23/04/2023,27/04/2023,2 weeks,8.0,True,4,"George Orwell's *1984* is a seminal dystopian novel depicting a terrifying totalitarian future where the omnipresent Party, led by Big Brother, enforces absolute control through surveillance, propaganda, thought manipulation (Thoughtcrime), and the erasure of history and truth. It follows Winston Smith"
+12.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,True,29,"Chronicles the lives, struggles, and growth of the four March sisters—Meg, Jo, Beth, and Amy—as they navigate poverty, societal expectations, love, loss, and personal ambitions during the American Civil War. It explores timeless themes of family, female independence, and finding one's"
+13.0,East of Eden,30/04/2023,05/05/2023,2 weeks,2.0,True,5,"John Steinbeck's *East of Eden* is an epic generational saga set in California's Salinas Valley. It explores the battle between good and evil within families and individuals, centering on the intertwined destinies of the Trasks and Hamiltons. The novel powerfully examines free will,"
+14.0,America Is in the Heart,01/05/2023,07/05/2023,2 weeks,3.0,True,6,"A semi-autobiographical novel by Carlos Bulosan depicting the harsh realities, racial struggles, and resilient hope of Filipino migrant laborers in early 20th-century America."
+15.0,Wuthering Heights,01/05/2023,10/05/2023,2 weeks,9.0,True,9,"*Wuthering Heights* is a dark, Gothic novel set on the Yorkshire moors. It chronicles the intense, destructive love between Heathcliff, an orphan, and Catherine Earnshaw, and the devastating cycle of revenge and cruelty their passion unleashes across two generations. It explores obsession"
+16.0,Dark Tales,15/05/2023,01/06/2023,2 weeks,2.0,True,17,"Shirley Jackson's **Dark Tales** collects unsettling short stories exploring psychological horror and the macabre. It features her iconic ""The Lottery"" alongside other chilling narratives where ordinary settings twist into realms of dread, paranoia, and disturbing revelations, showcasing her mastery of domestic unease and the"
+18.0,Les Miserables,03/06/2023,07/06/2023,2 weeks,5.0,True,4,"""Victor Hugo’s epic French novel explores justice, redemption, and love amid post-revolutionary France. Ex-convict Jean Valjean seeks redemption while evading Inspector Javert, intertwining with the struggles of the oppressed, including Fantine and revolutionary students. A profound critique of societal inequality"
+19.0,Dracula,10/06/2023,10/07/2023,2 weeks,10.0,True,30,
+20.0,Frankenstein,01/06/2023,20/06/2023,2 weeks,2.0,True,19,

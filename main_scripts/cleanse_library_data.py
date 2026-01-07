@@ -7,6 +7,7 @@ import re
 from datetime import datetime
 import os
 import argparse
+from openai import OpenAI
 
 def calculate_date_difference(date1, date2):
     """
@@ -23,19 +24,28 @@ def calculate_date_difference(date1, date2):
         print(e)
         return False
     
-def enrich_library_books_data(df_to_enrich):
+def enrich_library_books_data(df_to_enrich, ai_api_key):
     """
     Enriches the library books data with days borrowed column
     """
     try:
-        df_to_enrich['days_borrowed'] = df_to_enrich.apply(
+        df_to_enrich = df_to_enrich.copy()
+        df_to_enrich.loc[:, 'days_borrowed'] = df_to_enrich.apply(
             lambda row: calculate_date_difference(
-                row['Book checkout'], 
-                row['Book Returned']),
-                axis=1
+                row['Book checkout'],
+                row['Book Returned']
+            ),
+            axis=1
+        )
+        print("Enriching book description...")
+        df_to_enrich.loc[:, "book_description"] = (
+            df_to_enrich["Books"].apply(
+            lambda book: generate_book_description(book, ai_api_key)
             )
+        )
+        print("Finished enriching book description")
         return df_to_enrich
-    except(ValueError, TypeError):
+    except (ValueError, TypeError):
         return False
 
 def is_valid_date(date_str):
@@ -62,7 +72,47 @@ def cleanse_library_customers_data(input_file_path, output_file_path):
     except Exception as e:
         print(e)
 
-def cleanse_library_books_data(input_file_path, output_file_path):
+def normalize_llm_output(text: str) -> str:
+    """
+    Cleanse string
+    """
+    THINKING_PATTERN = re.compile(r"<think>.*?</think>", re.DOTALL)
+    text = THINKING_PATTERN.sub("", text)
+    return text.strip()
+
+def generate_book_description(book_name, api_key):
+    """
+    Function which calls AI model to generate description from book name
+    """
+    try:
+        # Create client to OPENAI via the Hugging Face Proxy
+        client = OpenAI(
+            base_url="https://router.huggingface.co/v1",
+            api_key=api_key,  # SHOULD BE SET IN VAULT OR AS ARGPARSE
+        )
+        # Use completion method to send prompt to model
+        completion = client.chat.completions.create(
+            model="deepseek-ai/DeepSeek-R1",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Answer concisely. Please don't provide a sentence over 60 words."
+                },
+                {
+                    "role": "user",
+                    "content": f"Provide a description for the book {book_name}."
+                }
+            ],
+            temperature=0.3,
+            max_tokens=60,
+        )
+        cleaned_result = normalize_llm_output(completion.choices[0].message.content)
+        return cleaned_result
+    except Exception as e:
+        print(e)
+
+
+def cleanse_library_books_data(input_file_path, output_file_path, ai_api_key):
     """
     Main function which clanses library books data
     """
@@ -84,7 +134,7 @@ def cleanse_library_books_data(input_file_path, output_file_path):
         print("Exporting to valid records to CSV")
         valid_data = result_df[result_df['valid_record'] == True]
         valid_data.drop(columns=['valid_record'])
-        valid_data = enrich_library_books_data(valid_data)
+        valid_data = enrich_library_books_data(valid_data, ai_api_key)
         valid_data.to_csv(output_file_path, index=False)
     except Exception as e:
         print(e)
@@ -94,6 +144,7 @@ def main():
     Main function to run the script
     """
     parser = argparse.ArgumentParser(description="Library data cleansing")
+    parser.add_argument("--ai_api_key", required=True, help="API key used to call AI")
     parser.add_argument("--customers-input", required=True, help="Path to customers input file")
     parser.add_argument("--customers-output", required=True, help="Path to customers output file")
     args = parser.parse_args()
@@ -104,7 +155,7 @@ def main():
     books_input_file = "../raw_data/03_Library Systembook.csv"
     books_output_file = "../output_cleansed_data/cleansed_system_book.csv"
     print("Starting customers data cleanse")
-    cleanse_library_books_data(books_input_file, books_output_file)
+    cleanse_library_books_data(books_input_file, books_output_file, args.ai_api_key)
     print("Data cleansing completed!")
 
 if __name__ == "__main__":
