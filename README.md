@@ -19,4 +19,5 @@ A library wants to improve their current quality analysis. They are looking for 
 - Raw Data is the library input data
 - Juypter notebooks has the notebooks used to describe cleansing/transformations
 - Cleansing Scripts has scripts which perform the cleansing as a script (rather than notebook)
-- Output cleansed data has the cleansed data
+- Cleansing Scripts has `pytest` test in `test_functions.py`
+- Output cleansed data has the cleansed and enriched data

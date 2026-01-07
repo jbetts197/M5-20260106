@@ -7,6 +7,36 @@ import re
 from datetime import datetime
 import os
 
+def calculate_date_difference(date1, date2):
+    """
+    Calculates the difference in days between two dates
+    """
+    try:
+        dateformat = "%d/%m/%Y"
+        if isinstance(date1, str):
+            date1 = datetime.strptime(date1, dateformat)
+        if isinstance(date2, str):
+            date2 = datetime.strptime(date2, dateformat)
+        return (date2 - date1).days
+    except Exception as e:
+        print(e)
+        return False
+    
+def enrich_library_books_data(df_to_enrich):
+    """
+    Enriches the library books data with days borrowed column
+    """
+    try:
+        df_to_enrich['days_borrowed'] = df_to_enrich.apply(
+            lambda row: calculate_date_difference(
+                row['Book checkout'], 
+                row['Book Returned']),
+                axis=1
+            )
+        return df_to_enrich
+    except(ValueError, TypeError):
+        return False
+
 def is_valid_date(date_str):
     """
     Checks if a date string is valid
@@ -52,7 +82,9 @@ def cleanse_library_books_data(input_file_path, output_file_path):
         result_df['Books'] = result_df['Books'].str.strip()
         print("Exporting to valid records to CSV")
         valid_data = result_df[result_df['valid_record'] == True]
-        valid_data.drop(columns=['valid_record']).to_csv(output_file_path, index=False)
+        valid_data.drop(columns=['valid_record'])
+        valid_data = enrich_library_books_data(valid_data)
+        valid_data.to_csv(output_file_path, index=False)
     except Exception as e:
         print(e)
 
