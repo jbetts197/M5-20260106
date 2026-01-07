@@ -24,6 +24,9 @@ A library wants to improve their current quality analysis. They are looking for 
     1. Go to https://huggingface.co/settings/tokens
     2. Create a Read token
 
+- Pre-req, you must have some libraries installed in your venv, from the root directory run:
+`pip install -r requirements.txt`
+
 - To execute the main script, run the following command from the `main_scripts` directory (note that currently the book description enrichment stage takes approx 2-3 mins, and the ai_api_key should be provided):
 `python .\cleanse_library_data.py --customers-input "./raw_data/03_Library SystemCustomers.csv" --customers-output "./output_cleansed_data/cleansed_system_customers.csv" --ai_api_key "hf_XXXX"`
 
