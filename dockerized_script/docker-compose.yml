@@ -1,0 +1,46 @@
+services:
+  library_cleanser:
+    build: .
+    container_name: library_cleanser
+    environment:
+      - AI_API_KEY=${AI_API_KEY}
+      - DB_PATH=/data/library.db
+    volumes:
+      - ./raw_data:/app/raw_data:ro
+      - ./output_cleansed_data:/app/output_cleansed_data
+      - ./data:/data
+    command:
+      [
+        "python",
+        "cleanse_library_data.py",
+        "--customers-input",
+        "/app/raw_data/03_Library SystemCustomers.csv",
+        "--customers-output",
+        "/app/output_cleansed_data/cleansed_system_customers.csv",
+        "--books-input",
+        "/app/raw_data/03_Library Systembook.csv",
+        "--books-output",
+        "/app/output_cleansed_data/cleansed_system_book.csv",
+        "--db-path",
+        "/data/library.db"
+      ]
+
+  sqlite:
+    image: alpine:latest
+    container_name: sqlite_client
+    volumes:
+      - ./data:/data
+    stdin_open: true
+    tty: true
+    entrypoint: sh
+
+  sqlite_web:
+      image: coleifer/sqlite-web:latest
+      container_name: sqlite_web
+      ports:
+        - "8080:8080"
+      volumes:
+        - ./data:/data:ro
+      environment:
+        - SQLITE_DATABASE=library.db
+

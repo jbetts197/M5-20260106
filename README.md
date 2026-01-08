@@ -17,6 +17,7 @@ A library wants to improve their current quality analysis. They are looking for 
 - `Juypter_notebooks` directory has the notebooks used to describe cleansing/transformations
 - `main_scripts` directory has scripts which perform the cleansing as a script, also contains unittesting
 - `Output_cleansed_data` directory has the cleansed and enriched data outputted from `main_scripts'
+- `dockerized_script` directory contains a dockerized version of the main script. see execution instructions below on how to use.
 
 **Execution instructions:**
 
@@ -38,3 +39,10 @@ A library wants to improve their current quality analysis. They are looking for 
 
 - To run example docker, use the following command:
 `docker run --rm -v ${PWD}/data:/data myfirstcontainer --number1 6 --number2 7`
+
+- To run main script dockerized, do the following:
+1. `cd dockerized_script` - move to the correct directory
+2. `docker compose build library_cleanser` - this will build the container for the main script, the container will be called library_cleanser
+3. `docker compose run --rm library_cleanser` - this will run the main script container (note that a .env file is required for the AI_API_KEY)
+4. `docker compose build sqlite_web` - this will build the container for the sqlite web app
+5. `docker compose run --rm --service-ports sqlite_web` - this will run the sqlite web app whilst keeping the service ports that were defined in the compose yaml file.
