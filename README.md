@@ -22,7 +22,7 @@ A library wants to improve their current quality analysis. They are looking for 
 ## Execution instructions for dockerized app:
 
 Pre-requisits to know:
-- The main script runs an enrichment process that uses AI to provide a description of each book more details available [here](/helpers/hugging_fact/hugging_face_test_notebook.ipynb). This means that you must have a `.env` file located in `/dockerized_script/.env` which contains the API key. A sample of this is provided at `/dockerized_script/.sample.env`.
+- The main script runs an enrichment process that uses AI to provide a description of each book more details available [here](/helpers/hugging_face/hugging_face_test_notebook.ipynb). This means that you must have a `.env` file located in `/dockerized_script/.env` which contains the API key. A sample of this is provided at `/dockerized_script/.sample.env`.
 
 - You must have an API token, you can get one for free:
     1. Go to https://huggingface.co/settings/tokens
