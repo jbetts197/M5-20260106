@@ -90,6 +90,9 @@
             <mxPoint x="13" as="offset" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="ceSF4Dam56MY4--Fp1D9-1" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="Flask OAuth" vertex="1">
+          <mxGeometry height="70" width="60" x="470" y="390" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
