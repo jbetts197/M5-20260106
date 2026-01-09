@@ -87,7 +87,10 @@ They are looking for an automated way of **cleaning, filtering, and enriching** 
 ### Prerequisites
 
 - Docker and Docker Compose installed
-- Hugging Face API token
+- Hugging Face API token:
+    - Go to https://huggingface.co/settings/tokens
+    - Create a Read token
+- Env at `/main_app.env` must be set using the Hugging Face API key (example `/main_app/.sample.env`)
 
 The pipeline includes an AI enrichment step to generate book descriptions.
 
