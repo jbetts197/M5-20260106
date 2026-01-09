@@ -1,20 +1,20 @@
 Id,Books,Book checkout,Book Returned,Days allowed to borrow,Customer ID,days_borrowed,book_description
-1.0,Catcher in the Rye,20/02/2023,25/02/2023,2 weeks,1.0,5,"J.D. Salinger's *The Catcher in the Rye* follows disillusioned teenager Holden Caulfield over a few chaotic days in New York City after being expelled from prep school. Narrated in Holden's distinctive, cynical voice, the novel explores themes of alienation, the phon"
-2.0,Lord of the rings the two towers,24/03/2023,21/03/2023,2 weeks,2.0,-3,Description unavailable for 'Lord of the rings the two towers'.
-3.0,Lord of the rings the return of the kind,29/03/2023,25/03/2023,2 weeks,3.0,-4,Description unavailable for 'Lord of the rings the return of the kind'.
-4.0,The hobbit,02/04/2023,25/03/2023,2 weeks,4.0,-8,Description unavailable for 'The hobbit'.
-5.0,Dune,02/04/2023,25/03/2023,2 weeks,5.0,-8,Description unavailable for 'Dune'.
-6.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,29,Description unavailable for 'Little Women'.
-7.0,IT,10/04/2063,03/04/2023,2 weeks,6.0,-14617,Description unavailable for 'IT'.
-8.0,Misery,15/04/2023,03/04/2023,2 weeks,7.0,-12,Description unavailable for 'Misery'.
-9.0,Catch 22,15/04/2023,16/04/2023,2 weeks,7.0,1,Description unavailable for 'Catch 22'.
-10.0,Animal Farm,20/04/2023,24/04/2023,2 weeks,2.0,4,Description unavailable for 'Animal Farm'.
-11.0,1984,23/04/2023,27/04/2023,2 weeks,8.0,4,Description unavailable for '1984'.
-12.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,29,Description unavailable for 'Little Women'.
-13.0,East of Eden,30/04/2023,05/05/2023,2 weeks,2.0,5,Description unavailable for 'East of Eden'.
-14.0,America Is in the Heart,01/05/2023,07/05/2023,2 weeks,3.0,6,Description unavailable for 'America Is in the Heart'.
-15.0,Wuthering Heights,01/05/2023,10/05/2023,2 weeks,9.0,9,Description unavailable for 'Wuthering Heights'.
-16.0,Dark Tales,15/05/2023,01/06/2023,2 weeks,2.0,17,Description unavailable for 'Dark Tales'.
-18.0,Les Miserables,03/06/2023,07/06/2023,2 weeks,5.0,4,Description unavailable for 'Les Miserables'.
-19.0,Dracula,10/06/2023,10/07/2023,2 weeks,10.0,30,Description unavailable for 'Dracula'.
-20.0,Frankenstein,01/06/2023,20/06/2023,2 weeks,2.0,19,Description unavailable for 'Frankenstein'.
+1.0,Catcher in the Rye,20/02/2023,25/02/2023,2 weeks,1.0,5,"""Catcher in the Rye"" is a coming-of-age novel by J.D. Salinger that follows the story of Holden Caulfield, a disillusioned teenager struggling to find his place in the world after being expelled from a prestigious boarding school."
+2.0,Lord of the rings the two towers,24/03/2023,21/03/2023,2 weeks,2.0,-3,"In J.R.R. Tolkien's ""The Two Towers,"" Frodo and his companions face new challenges as they journey to destroy the One Ring, while Aragorn, Legolas, and Gimli search for Merry and Pippin."
+3.0,Lord of the rings the return of the kind,29/03/2023,25/03/2023,2 weeks,3.0,-4,"""Lord of the Rings The Return of the King"" is the final installment of J.R.R. Tolkien's epic trilogy, concluding the quest to destroy the One Ring and save Middle-earth from darkness."
+4.0,The hobbit,02/04/2023,25/03/2023,2 weeks,4.0,-8,"""The Hobbit"" is a fantasy novel by J.R.R. Tolkien, following Bilbo Baggins as he embarks on a perilous journey with a group of dwarves to reclaim their treasure from the dragon Smaug."
+5.0,Dune,02/04/2023,25/03/2023,2 weeks,5.0,-8,"In a distant future, Paul Atreides, a young noble with special abilities, becomes the leader of a rebellion on the desert planet Arrakis against his ruthless family's enemies."
+6.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,29,"""Little Women"" by Louisa May Alcott is a heartwarming coming-of-age novel about four sisters growing up during the Civil War era in New England, exploring themes of love, family, and self-discovery."
+7.0,IT,10/04/2063,03/04/2023,2 weeks,6.0,-14617,"""IT"" is a horror novel by Stephen King that tells the story of a group of young outcasts in Derry, Maine, as they face supernatural forces and monstrous entities."
+8.0,Misery,15/04/2023,03/04/2023,2 weeks,7.0,-12,"""Misery"" is a psychological thriller about Paul Sheldon, a writer whose car breaks down on a remote road, and Annie Wilkes, his obsessive fan who holds him captive and forces him to write a novel featuring her favorite character."
+9.0,Catch 22,15/04/2023,16/04/2023,2 weeks,7.0,1,"""Catch-22"" is a satirical novel by Joseph Heller that follows the misadventures of a U.S. Air Force bombardier during World War II, navigating bureaucratic absurdities and illogical rules."
+10.0,Animal Farm,20/04/2023,24/04/2023,2 weeks,2.0,4,"""Animal Farm"" is a novella by George Orwell, a dystopian allegory that tells the story of a group of barnyard animals who rebel against their human owner and establish a totalitarian regime on a farm."
+11.0,1984,23/04/2023,27/04/2023,2 weeks,8.0,4,"In a dystopian future, Winston Smith rebels against the totalitarian government of Oceania, hiding his thoughts and desires in secret."
+12.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,29,"""Little Women"" by Louisa May Alcott is a heartwarming coming-of-age novel about four sisters growing up during the Civil War era in New England, exploring themes of love, family, and self-discovery."
+13.0,East of Eden,30/04/2023,05/05/2023,2 weeks,2.0,5,"""East of Eden"" is a classic novel by John Steinbeck, set in California's Salinas Valley, exploring themes of family, love, and redemption through the complex lives of the Trask and Hamilton families."
+14.0,America Is in the Heart,01/05/2023,07/05/2023,2 weeks,3.0,6,"""America Is in the Heart"" is a historical narrative that explores the country's complex and often tumultuous relationship with its indigenous peoples, European colonizers, and immigrants."
+15.0,Wuthering Heights,01/05/2023,10/05/2023,2 weeks,9.0,9,"""Wuthering Heights"" by Emily Brontë is a classic novel about the tumultuous and often destructive relationship between Catherine and Heathcliff, set against the backdrop of the Yorkshire moors."
+16.0,Dark Tales,15/05/2023,01/06/2023,2 weeks,2.0,17,"""Dark Tales"" is a collection of eerie and suspenseful short stories that explore themes of horror, mystery, and the supernatural."
+18.0,Les Miserables,03/06/2023,07/06/2023,2 weeks,5.0,4,"Set in 19th-century France, ""Les Misérables"" follows the lives of several individuals, including Jean Valjean and Javert, as they navigate redemption, justice, and revolution."
+19.0,Dracula,10/06/2023,10/07/2023,2 weeks,10.0,30,"The novel tells the story of Count Dracula, a vampire who moves from Transylvania to England and preys on humans, sparking a battle between good and evil."
+20.0,Frankenstein,01/06/2023,20/06/2023,2 weeks,2.0,19,"The novel tells the story of Victor Frankenstein, a young scientist who creates a monster from dead body parts and brings it to life through unnatural means."

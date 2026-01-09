@@ -4,3 +4,4 @@ openai
 sqlalchemy
 streamlit
 matplotlib
+requests

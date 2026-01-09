@@ -100,13 +100,15 @@ The pipeline includes an AI enrichment step to generate book descriptions.
 
 Long method:
 1. `cd main_app`
-2. `docker compose build library_cleanser`
-3. `docker compose run --rm library_cleanser`
-4. `docker compose build sqlite_web`
-5. `docker compose run --rm --service-ports sqlite_web`
-6. `docker compose build streamlit`
-7. `docker compose run --rm --service-ports streamlit`
-8. You can view sqllite data at `localhost:8080` and you can view dashboard at `localhost:8502`
+2. `docker compose build ai_model`
+3. `docker compose run ai_model`
+4. `docker compose build library_cleanser`
+5. `docker compose run --rm library_cleanser`
+6. `docker compose build sqlite_web`
+7. `docker compose run --rm --service-ports sqlite_web`
+8. `docker compose build streamlit`
+9. `docker compose run --rm --service-ports streamlit`
+10. You can view sqllite data at `localhost:8080` and you can view dashboard at `localhost:8502`
 
 Quick method:
 1. `cd main_app`

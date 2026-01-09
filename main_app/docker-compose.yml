@@ -2,6 +2,9 @@ services:
   library_cleanser:
     build: .
     container_name: library_cleanser
+    depends_on:
+      - ai_model
+      - sqlite
     environment:
       - AI_API_KEY=${AI_API_KEY}
       - DB_PATH=/data/library.db
@@ -35,6 +38,16 @@ services:
     stdin_open: true
     tty: true
     entrypoint: sh
+
+  ai_model:
+    image: ollama/ollama:latest
+    container_name: ai_model
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
 
   streamlit:
     build: ./streamlit/

@@ -11,6 +11,7 @@ Library Data Cleansing Script
 
 import pandas as pd
 import re
+import requests
 from datetime import datetime
 import os
 import argparse
@@ -18,7 +19,6 @@ import time
 import sqlite3
 from typing import Dict, Optional
 
-from openai import OpenAI
 from sqlalchemy import create_engine
 
 # ============================================================
@@ -75,17 +75,6 @@ def save_df_to_sqlite(df: pd.DataFrame, db_path: str, table_name: str):
 # ============================================================
 
 CACHE_TABLE = "book_description_cache"
-
-
-def make_hf_client(api_key: str) -> OpenAI:
-    """
-    Creates a reusable HuggingFace/OpenAI-compatible client.
-    """
-    return OpenAI(
-        base_url="https://router.huggingface.co/v1",
-        api_key=api_key,
-    )
-
 
 def ensure_description_cache(db_path: str):
     """
@@ -148,23 +137,49 @@ def upsert_cached_descriptions(db_path: str, mapping: Dict[str, str]):
     conn.commit()
     conn.close()
 
-
-def generate_book_description(book_name: str, client: OpenAI) -> str:
+def generate_book_description_local(book_name: str) -> str:
     """
-    Calls the AI model to generate a short description for a book title.
+    Calls local Ollama to generate a 1-sentence description.
+    Returns a non-empty string, or raises with useful diagnostics.
     """
-    completion = client.chat.completions.create(
-        model="deepseek-ai/DeepSeek-R1",
-        messages=[
-            {"role": "system", "content": "Answer concisely. Max 20 words."},
-            {"role": "user", "content": f"Provide a description for the book {book_name}."}
-        ],
-        temperature=0.3,
-        max_tokens=40,
-    )
-    return normalize_llm_output(completion.choices[0].message.content)
+    base_url = os.getenv("OLLAMA_BASE_URL", "http://ai_model:11434").rstrip("/")
+    model = os.getenv("OLLAMA_MODEL", "llama3.2:1b")
 
+    # Guard against empty/NaN titles
+    if book_name is None:
+        raise ValueError("book_name is None")
+    book_name = str(book_name).strip()
+    if not book_name or book_name.lower() in {"nan", "none"}:
+        raise ValueError(f"book_name is empty/invalid: {book_name!r}")
 
+    payload = {
+        "model": model,
+        "prompt": f'Provide a one-sentence description (max 25 words) for the book titled "{book_name}". Do not include any quote or doublequote characters in output.',
+        "stream": False,
+        "options": {
+            "temperature": 0.2,
+            "num_predict": 80,  # ensures the model is allowed to output tokens
+        },
+    }
+
+    url = f"{base_url}/api/generate"
+    r = requests.post(url, json=payload, timeout=30)
+    r.raise_for_status()
+
+    data = r.json()
+
+    # Defensive parsing
+    text = (data.get("response") or "").strip()
+    if not text:
+        # Include the most useful fields for debugging
+        raise RuntimeError(
+            "Ollama returned an empty response. "
+            f"model={model!r}, book_name={book_name!r}, "
+            f"done={data.get('done')!r}, done_reason={data.get('done_reason')!r}, "
+            f"full_payload_keys={list(data.keys())!r}"
+        )
+
+    return text
 # ============================================================
 # Enrichment logic
 # ============================================================
@@ -199,11 +214,9 @@ def enrich_library_books_data(
 
     generated = {}
     if missing:
-        client = make_hf_client(ai_api_key)
-
         for title in missing:
             try:
-                generated[title] = generate_book_description(title, client)
+                generated[title] = generate_book_description_local(title)
                 time.sleep(0.3)  # small pause to avoid free-tier throttling
             except Exception as e:
                 print(f"AI failed for '{title}': {e}")
