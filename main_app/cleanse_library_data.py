@@ -1,272 +1,373 @@
 #!/usr/bin/env python3
 """
 Library Data Cleansing Script
+
+- Cleans customer and book CSV data
+- Tracks dropped records with reasons
+- Enriches valid book records with:
+    - days_borrowed (date difference)
+    - AI-generated book descriptions (cached to avoid re-calls)
 """
+
 import pandas as pd
 import re
 from datetime import datetime
 import os
 import argparse
-from openai import OpenAI
+import time
+import sqlite3
+from typing import Dict, Optional
 
+from openai import OpenAI
 from sqlalchemy import create_engine
+
+# ============================================================
+# Utility functions
+# ============================================================
 
 def calculate_date_difference(date1, date2):
     """
-    Calculates the difference in days between two dates
+    Calculates the number of days between two dd/mm/YYYY dates.
     """
     try:
-        dateformat = "%d/%m/%Y"
-        if isinstance(date1, str):
-            date1 = datetime.strptime(date1, dateformat)
-        if isinstance(date2, str):
-            date2 = datetime.strptime(date2, dateformat)
-        return (date2 - date1).days
-    except Exception as e:
-        print(e)
-        return False
+        fmt = "%d/%m/%Y"
+        d1 = datetime.strptime(date1, fmt)
+        d2 = datetime.strptime(date2, fmt)
+        return (d2 - d1).days
+    except Exception:
+        return None
 
-def enrich_library_books_data(df_to_enrich, ai_api_key):
-    """
-    Enriches the library books data with days borrowed column
-    """
-    try:
-        df_to_enrich = df_to_enrich.copy()
-        df_to_enrich.loc[:, 'days_borrowed'] = df_to_enrich.apply(
-            lambda row: calculate_date_difference(
-                row['Book checkout'],
-                row['Book Returned']
-            ),
-            axis=1
-        )
-        print("Enriching book description...")
-        df_to_enrich.loc[:, "book_description"] = (
-            df_to_enrich["Books"].apply(
-                lambda book: generate_book_description(book, ai_api_key)
-            )
-        )
-        print("Finished enriching book description")
-        return df_to_enrich
-    except (ValueError, TypeError):
-        return False
 
 def is_valid_date(date_str):
     """
-    Checks if a date string is valid
+    Checks whether a string matches dd/mm/YYYY format.
     """
     try:
-        datetime.strptime(str(date_str), '%d/%m/%Y')
+        datetime.strptime(str(date_str), "%d/%m/%Y")
         return True
     except (ValueError, TypeError):
         return False
 
+
 def normalize_llm_output(text: str) -> str:
     """
-    Cleanse string
+    Removes internal <think> blocks and trims whitespace.
     """
     THINKING_PATTERN = re.compile(r"<think>.*?</think>", re.DOTALL)
-    text = THINKING_PATTERN.sub("", text)
-    return text.strip()
+    return THINKING_PATTERN.sub("", text).strip()
 
-def generate_book_description(book_name, api_key):
-    """
-    Function which calls AI model to generate description from book name
-    """
-    try:
-        client = OpenAI(
-            base_url="https://router.huggingface.co/v1",
-            api_key=api_key,
-        )
-        completion = client.chat.completions.create(
-            model="deepseek-ai/DeepSeek-R1",
-            messages=[
-                {"role": "system", "content": "Answer concisely. Please don't provide a sentence over 60 words."},
-                {"role": "user", "content": f"Provide a description for the book {book_name}."}
-            ],
-            temperature=0.3,
-            max_tokens=60,
-        )
-        cleaned_result = normalize_llm_output(completion.choices[0].message.content)
-        return cleaned_result
-    except Exception as e:
-        print(e)
+
+# ============================================================
+# SQLite helpers
+# ============================================================
 
 def save_df_to_sqlite(df: pd.DataFrame, db_path: str, table_name: str):
     """
-    Persist a dataframe to a SQLite database.
+    Writes a dataframe to a SQLite table.
     """
-    try:
-        engine = create_engine(f"sqlite:///{db_path}")
-        df.to_sql(table_name, engine, if_exists="replace", index=False)
-        print(f"Saved {len(df)} rows to SQLite table '{table_name}' at {db_path}")
-    except Exception as e:
-        print(f"Failed to save table '{table_name}' to SQLite: {e}")
+    engine = create_engine(f"sqlite:///{db_path}")
+    df.to_sql(table_name, engine, if_exists="replace", index=False)
+    print(f"Saved {len(df)} rows to table '{table_name}'")
 
-def cleanse_library_customers_data(input_file_path, output_file_path, db_path=None):
+
+# ============================================================
+# LLM client + caching
+# ============================================================
+
+CACHE_TABLE = "book_description_cache"
+
+
+def make_hf_client(api_key: str) -> OpenAI:
     """
-    Main function which cleanses library customers data
+    Creates a reusable HuggingFace/OpenAI-compatible client.
     """
-    try:
-        input_df = pd.read_csv(input_file_path)
-        print("Step 1: Removing empty and duplicated rows")
-        result_df = input_df.dropna(how='all').drop_duplicates()
-        print("Step 2: Standardise text space in customer name")
-        result_df['Customer Name'] = result_df['Customer Name'].astype(str).str.strip()
-        result_df.to_csv(output_file_path, index=False)
+    return OpenAI(
+        base_url="https://router.huggingface.co/v1",
+        api_key=api_key,
+    )
+
+
+def ensure_description_cache(db_path: str):
+    """
+    Ensures a SQLite table exists for caching book descriptions.
+    """
+    conn = sqlite3.connect(db_path)
+    conn.execute(f"""
+        CREATE TABLE IF NOT EXISTS {CACHE_TABLE} (
+            book_name TEXT PRIMARY KEY,
+            description TEXT,
+            updated_at TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+
+def load_cached_descriptions(db_path: str, titles) -> Dict[str, str]:
+    """
+    Loads cached descriptions for known book titles.
+    """
+    if not titles.any():
+        return {}
+
+    ensure_description_cache(db_path)
+    conn = sqlite3.connect(db_path)
+
+    placeholders = ",".join(["?"] * len(titles))
+    rows = conn.execute(
+        f"SELECT book_name, description FROM {CACHE_TABLE} WHERE book_name IN ({placeholders})",
+        list(titles),
+    ).fetchall()
+
+    conn.close()
+    return {name: desc for name, desc in rows}
+
+
+def upsert_cached_descriptions(db_path: str, mapping: Dict[str, str]):
+    """
+    Inserts or updates cached book descriptions.
+    """
+    if not mapping:
+        return
+
+    ensure_description_cache(db_path)
+    conn = sqlite3.connect(db_path)
+
+    now = datetime.utcnow().isoformat()
+    conn.executemany(
+        f"""
+        INSERT INTO {CACHE_TABLE} (book_name, description, updated_at)
+        VALUES (?, ?, ?)
+        ON CONFLICT(book_name) DO UPDATE SET
+            description=excluded.description,
+            updated_at=excluded.updated_at
+        """,
+        [(k, v, now) for k, v in mapping.items()],
+    )
+
+    conn.commit()
+    conn.close()
+
+
+def generate_book_description(book_name: str, client: OpenAI) -> str:
+    """
+    Calls the AI model to generate a short description for a book title.
+    """
+    completion = client.chat.completions.create(
+        model="deepseek-ai/DeepSeek-R1",
+        messages=[
+            {"role": "system", "content": "Answer concisely. Max 20 words."},
+            {"role": "user", "content": f"Provide a description for the book {book_name}."}
+        ],
+        temperature=0.3,
+        max_tokens=40,
+    )
+    return normalize_llm_output(completion.choices[0].message.content)
+
+
+# ============================================================
+# Enrichment logic
+# ============================================================
+
+def enrich_library_books_data(
+    df: pd.DataFrame,
+    ai_api_key: str,
+    db_path: Optional[str] = None
+) -> pd.DataFrame:
+    """
+    Adds derived and AI-enriched fields to valid book records.
+    """
+    enriched = df.copy()
+
+    # ------------------------------------
+    # Calculate days between checkout and return dates
+    # ------------------------------------
+    checkout = pd.to_datetime(enriched["Book checkout"], format="%d/%m/%Y")
+    returned = pd.to_datetime(enriched["Book Returned"], format="%d/%m/%Y")
+    enriched["days_borrowed"] = (returned - checkout).dt.days
+
+    # ------------------------------------
+    # Generate book descriptions (unique titles only)
+    # ------------------------------------
+    print("Enriching book descriptions...")
+
+    titles = enriched["Books"].astype(str).str.strip()
+    unique_titles = titles.unique()
+
+    cached = load_cached_descriptions(db_path, pd.Series(unique_titles)) if db_path else {}
+    missing = [t for t in unique_titles if t not in cached]
+
+    generated = {}
+    if missing:
+        client = make_hf_client(ai_api_key)
+
+        for title in missing:
+            try:
+                generated[title] = generate_book_description(title, client)
+                time.sleep(0.3)  # small pause to avoid free-tier throttling
+            except Exception as e:
+                print(f"AI failed for '{title}': {e}")
+                generated[title] = f"Description unavailable for '{title}'."
 
         if db_path:
-            save_df_to_sqlite(result_df, db_path, "customers")
+            upsert_cached_descriptions(db_path, generated)
 
-        return result_df
-    except Exception as e:
-        print(e)
-        return None
+    title_to_desc = {**cached, **generated}
+    enriched["book_description"] = titles.map(title_to_desc)
+
+    return enriched
+
+
+# ============================================================
+# Cleansing workflows
+# ============================================================
+
+def cleanse_library_customers_data(input_file, output_file, db_path=None):
+    """
+    Cleans customer data by removing empty and duplicate rows.
+    """
+    df = pd.read_csv(input_file)
+    df = df.dropna(how="all").drop_duplicates()
+    df["Customer Name"] = df["Customer Name"].astype(str).str.strip()
+    df.to_csv(output_file, index=False)
+
+    if db_path:
+        save_df_to_sqlite(df, db_path, "customers")
+
+    return df
+
 
 def cleanse_library_books_data(
-    input_file_path,
-    output_file_path,
+    input_file,
+    output_file,
     ai_api_key,
     db_path=None,
     metrics_output_file_path=None
 ):
     """
-    Main function which cleanses library books data + exports metrics_df for dropped rows.
+    Cleans, enriches, and exports book data with metrics for dropped records.
     """
-    try:
-        input_df = pd.read_csv(input_file_path)
+    input_df = pd.read_csv(input_file)
+    drop_events = []
 
-        # -----------------------------
-        # Metrics collection helpers
-        # -----------------------------
-        drop_events = []
+    def log_drops(df, mask, step, reason):
+        """
+        Records dropped rows with the rule that caused removal.
+        """
+        dropped = df.loc[mask].copy()
+        if dropped.empty:
+            return
+        dropped.insert(0, "row_index", dropped.index)
+        dropped.insert(1, "rule_step", step)
+        dropped.insert(2, "drop_reason", reason)
+        drop_events.append(dropped)
 
-        def log_drops(df: pd.DataFrame, mask: pd.Series, step: str, reason: str):
-            """
-            Append dropped rows (where mask == True) into drop_events with metadata.
-            """
-            dropped = df.loc[mask].copy()
-            if dropped.empty:
-                return
+    # ------------------------------------
+    # Remove fully empty rows
+    # ------------------------------------
+    empty_mask = input_df.isna().all(axis=1)
+    log_drops(input_df, empty_mask, "Step 1", "Empty row")
+    df = input_df.loc[~empty_mask].copy()
 
-            dropped.insert(0, "row_index", dropped.index)
-            dropped.insert(1, "rule_step", step)
-            dropped.insert(2, "drop_reason", reason)
-            drop_events.append(dropped)
+    # ------------------------------------
+    # Remove duplicate rows
+    # ------------------------------------
+    dup_mask = df.duplicated()
+    log_drops(df, dup_mask, "Step 2", "Duplicate row")
+    df = df.loc[~dup_mask].copy()
 
-        # -----------------------------
-        # Step 1: Drop fully empty rows
-        # -----------------------------
-        print("Step 1: Removing empty rows")
-        empty_mask = input_df.isna().all(axis=1)
-        log_drops(input_df, empty_mask, "Step 1", "Dropped: empty row (all columns null/NaN)")
-        step1_df = input_df.loc[~empty_mask].copy()
+    # ------------------------------------
+    # Drop rows without customer ID
+    # ------------------------------------
+    missing_customer = df["Customer ID"].isna()
+    log_drops(df, missing_customer, "Step 3", "Missing Customer ID")
+    df = df.loc[~missing_customer].copy()
 
-        # -----------------------------
-        # Step 2: Drop duplicates
-        # -----------------------------
-        print("Step 2: Removing duplicated rows")
-        dup_mask = step1_df.duplicated(keep="first")
-        log_drops(step1_df, dup_mask, "Step 2", "Dropped: duplicate row (keeping first occurrence)")
-        step2_df = step1_df.loc[~dup_mask].copy()
+    # ------------------------------------
+    # Drop rows with invalid date formats
+    # ------------------------------------
+    # Clean raw values (remove quotes + whitespace)
+    df["Book checkout"] = (
+        df["Book checkout"].astype(str)
+        .str.replace('"', '', regex=False)
+        .str.strip()
+    )
+    df["Book Returned"] = (
+        df["Book Returned"].astype(str)
+        .str.replace('"', '', regex=False)
+        .str.strip()
+    )
+    # If the field contains timestamps, keep only the date portion
+    df["Book checkout"] = df["Book checkout"].str.split().str[0]
+    df["Book Returned"] = df["Book Returned"].str.split().str[0]
+    checkout_valid = df["Book checkout"].apply(is_valid_date)
+    returned_valid = df["Book Returned"].apply(is_valid_date)
+    log_drops(df, ~checkout_valid, "Step 4", "Invalid checkout date")
+    log_drops(df, ~returned_valid, "Step 4", "Invalid return date")
+    df = df.loc[checkout_valid & returned_valid].copy()
 
-        result_df = step2_df
+    # ------------------------------------
+    # Normalise book titles
+    # ------------------------------------
+    df["Books"] = df["Books"].astype(str).str.strip()
 
-        # -----------------------------
-        # Step 3: Handle NaN Values (Customer ID required)
-        # -----------------------------
-        print("Step 3: Dropping rows missing Customer ID")
-        missing_customer_id_mask = result_df["Customer ID"].isna()
-        log_drops(result_df, missing_customer_id_mask, "Step 3", "Dropped: missing Customer ID")
-        result_df = result_df.loc[~missing_customer_id_mask].copy()
+    # ------------------------------------
+    # Enrich valid records
+    # ------------------------------------
+    enriched = enrich_library_books_data(df, ai_api_key, db_path)
+    enriched.to_csv(output_file, index=False)
 
-        # -----------------------------
-        # Step 4: Handle invalid date records
-        # -----------------------------
-        print("Step 4: Dropping rows with invalid dates")
-        result_df["Book checkout"] = result_df["Book checkout"].astype(str).str.replace('"', '')
-        result_df["Book Returned"] = result_df["Book Returned"].astype(str).str.replace('"', '')
+    if db_path:
+        save_df_to_sqlite(enriched, db_path, "books")
 
-        checkout_valid = result_df["Book checkout"].apply(is_valid_date)
-        returned_valid = result_df["Book Returned"].apply(is_valid_date)
+    # ------------------------------------
+    # Export metrics
+    # ------------------------------------
+    metrics_df = pd.concat(drop_events, ignore_index=True) if drop_events else pd.DataFrame()
+    if metrics_output_file_path:
+        metrics_df.to_csv(metrics_output_file_path, index=False)
 
-        invalid_checkout_mask = ~checkout_valid
-        invalid_return_mask = ~returned_valid
+    if db_path and not metrics_df.empty:
+        save_df_to_sqlite(metrics_df, db_path, "books_dropped_records")
 
-        log_drops(result_df, invalid_checkout_mask, "Step 4", "Dropped: invalid Book checkout date (expected dd/mm/YYYY)")
-        log_drops(result_df, invalid_return_mask, "Step 4", "Dropped: invalid Book Returned date (expected dd/mm/YYYY)")
+    return enriched, metrics_df
 
-        # drop any invalid date rows
-        valid_dates_mask = checkout_valid & returned_valid
-        result_df = result_df.loc[valid_dates_mask].copy()
 
-        # -----------------------------
-        # Step 5: Standardise text space in book title
-        # -----------------------------
-        print("Step 5: Standardise text space in book title")
-        result_df["Books"] = result_df["Books"].astype(str).str.strip()
-
-        # -----------------------------
-        # Export valid records
-        # -----------------------------
-        print("Enriching and exporting valid records to CSV")
-        valid_data = enrich_library_books_data(result_df, ai_api_key)
-        valid_data.to_csv(output_file_path, index=False)
-
-        if db_path:
-            save_df_to_sqlite(valid_data, db_path, "books")
-
-        # -----------------------------
-        # Build + export metrics_df
-        # -----------------------------
-        metrics_df = pd.concat(drop_events, ignore_index=True) if drop_events else pd.DataFrame(
-            columns=["row_index", "rule_step", "drop_reason"]
-        )
-
-        if metrics_output_file_path:
-            metrics_df.to_csv(metrics_output_file_path, index=False)
-            print(f"Exported {len(metrics_df)} dropped-row records to {metrics_output_file_path}")
-
-        if db_path and not metrics_df.empty:
-            save_df_to_sqlite(metrics_df, db_path, "books_dropped_records")
-
-        return valid_data, metrics_df
-
-    except Exception as e:
-        print(e)
-        return None, None
+# ============================================================
+# CLI entrypoint
+# ============================================================
 
 def main():
-    """
-    Main function to run the script
-    """
     parser = argparse.ArgumentParser(description="Library data cleansing")
+    parser.add_argument("--ai_api_key", default=os.getenv("AI_API_KEY"))
+    parser.add_argument("--customers-input", required=True)
+    parser.add_argument("--customers-output", required=True)
+    parser.add_argument("--books-input", required=True)
+    parser.add_argument("--books-output", required=True)
+    parser.add_argument("--books-metrics-output", required=True)
+    parser.add_argument("--db-path", default=os.getenv("DB_PATH", "/data/library.db"))
 
-    # Arguments with ENV var fallback
-    parser.add_argument("--ai_api_key", default=os.getenv("AI_API_KEY"), help="API key used to call AI")
-    parser.add_argument("--customers-input", required=True, help="Path to customers input file")
-    parser.add_argument("--customers-output", required=True, help="Path to customers output file")
-    parser.add_argument("--books-input", required=True, help="Path to books input file")
-    parser.add_argument("--books-output", required=True, help="Path to books output file")
-    parser.add_argument("--books-metrics-output", required=True, help="Path to books dropped-records metrics CSV")
-    parser.add_argument("--db-path", default=os.getenv("DB_PATH", "/data/library.db"), help="SQLite DB path")
     args = parser.parse_args()
 
     if not args.ai_api_key:
-        raise SystemExit("Missing AI API key. Provide --ai_api_key or set AI_API_KEY environment variable.")
+        raise SystemExit("AI API key missing")
 
-    print("Starting customers data cleanse")
-    cleanse_library_customers_data(args.customers_input, args.customers_output, db_path=args.db_path)
+    cleanse_library_customers_data(
+        args.customers_input,
+        args.customers_output,
+        args.db_path
+    )
 
-    print("Starting books data cleanse")
-    valid_books_df, metrics_df = cleanse_library_books_data(
+    cleanse_library_books_data(
         args.books_input,
         args.books_output,
         args.ai_api_key,
-        db_path=args.db_path,
-        metrics_output_file_path=args.books_metrics_output
+        args.db_path,
+        args.books_metrics_output
     )
 
-    print("Data cleansing completed!")
+    print("Data cleansing completed")
+
 
 if __name__ == "__main__":
     main()

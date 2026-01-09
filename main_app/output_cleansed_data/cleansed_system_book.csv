@@ -1,21 +1,20 @@
 Id,Books,Book checkout,Book Returned,Days allowed to borrow,Customer ID,days_borrowed,book_description
-1.0,Catcher in the Rye,20/02/2023,25/02/2023,2 weeks,1.0,5,"**Concise Description:**  
-*The Catcher in the Rye* follows disillusioned teenager Holden Caulfield after his expulsion from prep school. Wandering New York City, he critiques adult ""phoniness"" while grappling with innocence, loss, and his own mental turmoil. Told in"
-2.0,Lord of the rings the two towers,24/03/2023,21/03/2023,2 weeks,2.0,-3,
-3.0,Lord of the rings the return of the kind,29/03/2023,25/03/2023,2 weeks,3.0,-4,
-4.0,The hobbit,02/04/2023,25/03/2023,2 weeks,4.0,-8,
-5.0,Dune,02/04/2023,25/03/2023,2 weeks,5.0,-8,
-6.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,29,
-7.0,IT,10/04/2063,03/04/2023,2 weeks,6.0,-14617,
-8.0,Misery,15/04/2023,03/04/2023,2 weeks,7.0,-12,
-9.0,Catch 22,15/04/2023,16/04/2023,2 weeks,7.0,1,
-10.0,Animal Farm,20/04/2023,24/04/2023,2 weeks,2.0,4,
-11.0,1984,23/04/2023,27/04/2023,2 weeks,8.0,4,
-12.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,29,
-13.0,East of Eden,30/04/2023,05/05/2023,2 weeks,2.0,5,
-14.0,America Is in the Heart,01/05/2023,07/05/2023,2 weeks,3.0,6,
-15.0,Wuthering Heights,01/05/2023,10/05/2023,2 weeks,9.0,9,
-16.0,Dark Tales,15/05/2023,01/06/2023,2 weeks,2.0,17,
-18.0,Les Miserables,03/06/2023,07/06/2023,2 weeks,5.0,4,
-19.0,Dracula,10/06/2023,10/07/2023,2 weeks,10.0,30,
-20.0,Frankenstein,01/06/2023,20/06/2023,2 weeks,2.0,19,
+1.0,Catcher in the Rye,20/02/2023,25/02/2023,2 weeks,1.0,5,"J.D. Salinger's *The Catcher in the Rye* follows disillusioned teenager Holden Caulfield over a few chaotic days in New York City after being expelled from prep school. Narrated in Holden's distinctive, cynical voice, the novel explores themes of alienation, the phon"
+2.0,Lord of the rings the two towers,24/03/2023,21/03/2023,2 weeks,2.0,-3,Description unavailable for 'Lord of the rings the two towers'.
+3.0,Lord of the rings the return of the kind,29/03/2023,25/03/2023,2 weeks,3.0,-4,Description unavailable for 'Lord of the rings the return of the kind'.
+4.0,The hobbit,02/04/2023,25/03/2023,2 weeks,4.0,-8,Description unavailable for 'The hobbit'.
+5.0,Dune,02/04/2023,25/03/2023,2 weeks,5.0,-8,Description unavailable for 'Dune'.
+6.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,29,Description unavailable for 'Little Women'.
+7.0,IT,10/04/2063,03/04/2023,2 weeks,6.0,-14617,Description unavailable for 'IT'.
+8.0,Misery,15/04/2023,03/04/2023,2 weeks,7.0,-12,Description unavailable for 'Misery'.
+9.0,Catch 22,15/04/2023,16/04/2023,2 weeks,7.0,1,Description unavailable for 'Catch 22'.
+10.0,Animal Farm,20/04/2023,24/04/2023,2 weeks,2.0,4,Description unavailable for 'Animal Farm'.
+11.0,1984,23/04/2023,27/04/2023,2 weeks,8.0,4,Description unavailable for '1984'.
+12.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,29,Description unavailable for 'Little Women'.
+13.0,East of Eden,30/04/2023,05/05/2023,2 weeks,2.0,5,Description unavailable for 'East of Eden'.
+14.0,America Is in the Heart,01/05/2023,07/05/2023,2 weeks,3.0,6,Description unavailable for 'America Is in the Heart'.
+15.0,Wuthering Heights,01/05/2023,10/05/2023,2 weeks,9.0,9,Description unavailable for 'Wuthering Heights'.
+16.0,Dark Tales,15/05/2023,01/06/2023,2 weeks,2.0,17,Description unavailable for 'Dark Tales'.
+18.0,Les Miserables,03/06/2023,07/06/2023,2 weeks,5.0,4,Description unavailable for 'Les Miserables'.
+19.0,Dracula,10/06/2023,10/07/2023,2 weeks,10.0,30,Description unavailable for 'Dracula'.
+20.0,Frankenstein,01/06/2023,20/06/2023,2 weeks,2.0,19,Description unavailable for 'Frankenstein'.
