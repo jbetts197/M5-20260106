@@ -1,4 +1,0 @@
-pandas
-argparse
-openai
-sqlalchemy
