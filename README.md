@@ -16,6 +16,7 @@ It focuses on data quality, transparency of dropped records, and reproducible ex
   - [Execution Steps](#execution-steps)
 - [Outputs](#outputs)
 - [Notes](#notes)
+- [Screenshots](#screenshots)
 
 ---
 
@@ -130,3 +131,12 @@ Quick method:
 - Dropped records are never silently removed
 - The pipeline is repeatable and extensible
 - Suitable for assessment and real-world use
+
+## Screenshots
+
+#### Titles AI generation
+![titles_ai_gen](/helpers/screenshots/screenshot-titles-generation.png "Titles AI Gen")
+
+#### Dropped analysis
+![dropped_recs_analysis](/helpers/screenshots/screenshot-dropped-analysis.png "Dropped Records Analysis")
+
