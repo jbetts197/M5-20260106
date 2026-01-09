@@ -5,8 +5,6 @@ from pathlib import Path
 
 DB_PATH = Path("/data/library.db")
 
-st.title("📚 Library Database Viewer")
-
 # ---- Safety check -------------------------------------------------
 if not DB_PATH.exists():
     st.error(f"Database not found at {DB_PATH}")
@@ -30,17 +28,40 @@ def load_table(table_name):
         return pd.read_sql(f"SELECT * FROM {table_name}", conn)
 
 # ---- UI -----------------------------------------------------------
-tables = get_tables()
+st.title("📚 Library Metrics Viewer")
 
+tables = get_tables()
 if not tables:
     st.warning("No tables found in database.")
     st.stop()
 
 table = st.selectbox("Select a table", tables)
-
 df = load_table(table)
 
 st.subheader(f"Table: `{table}`")
 st.write(f"Rows: {len(df)} | Columns: {len(df.columns)}")
-
 st.dataframe(df, use_container_width=True)
+
+# ---- BASIC ANALYSIS: Dropped Records ------------------------------
+if table == "books_dropped_records" and "drop_reason" in df.columns:
+    st.divider()
+    st.subheader("📉 Dropped Records Analysis")
+
+    drop_counts = (
+    df.groupby("drop_reason")
+      .size()
+      .reset_index(name="count")
+      .sort_values("count", ascending=False)
+    )
+
+
+    st.write("Drop reason counts")
+    st.dataframe(drop_counts, use_container_width=True)
+
+    st.write("Drop reason distribution")
+    st.pyplot(
+        drop_counts
+        .set_index("drop_reason")["count"]
+        .plot.pie(autopct="%1.1f%%", ylabel="")
+        .get_figure()
+    )

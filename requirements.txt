@@ -3,3 +3,4 @@ argparse
 openai
 sqlalchemy
 streamlit
+matplotlib
