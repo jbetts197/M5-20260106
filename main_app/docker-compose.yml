@@ -57,6 +57,8 @@ services:
       - "8502:8502"
 
   sqlite_web:
+      depends_on:
+        - sqlite
       image: coleifer/sqlite-web:latest
       container_name: sqlite_web
       ports:
