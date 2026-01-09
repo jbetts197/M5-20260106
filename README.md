@@ -33,4 +33,6 @@ Steps to follow after pre-requisits:
 2. `docker compose build library_cleanser` - This will build the container for the main script, the container will be called library_cleanser
 3. `docker compose run --rm library_cleanser` - This will run the main script container (Note that an env file is required for the AI_API_KEY as per pre-req section)
 4. `docker compose build sqlite_web` - This will build the container for the sqlite web app
-5. `docker compose run --rm --service-ports sqlite_web` - This will run the sqlite web app whilst keeping the service ports that were defined in the compose yaml file.
+5. `docker compose run --rm --service-ports sqlite_web` - This will run the sqlite web app whilst keeping the service ports that were defined in the compose yaml file. Available at localhost:8080
+6. `docker compose build streamlit` - This will build the streamlit application
+7. `docker compose run --rm --service-ports streamlit` - This will run the streamlit web app.  Available at localhost:8502

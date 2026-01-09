@@ -122,40 +122,118 @@ def cleanse_library_customers_data(input_file_path, output_file_path, db_path=No
         print(e)
         return None
 
-def cleanse_library_books_data(input_file_path, output_file_path, ai_api_key, db_path=None):
+def cleanse_library_books_data(
+    input_file_path,
+    output_file_path,
+    ai_api_key,
+    db_path=None,
+    metrics_output_file_path=None
+):
     """
-    Main function which cleanses library books data
+    Main function which cleanses library books data + exports metrics_df for dropped rows.
     """
     try:
         input_df = pd.read_csv(input_file_path)
-        print("Step 1 & 2: Removing empty and duplicated rows")
-        result_df = input_df.dropna(how='all').drop_duplicates()
-        print("Step 3: Handle NaN Values")
-        result_df['valid_record'] = result_df['Customer ID'].notna()
-        print("Step 4: Handle invalid date records")
-        result_df['Book checkout'] = result_df['Book checkout'].astype(str).str.replace('"', '')
-        result_df['Book Returned'] = result_df['Book Returned'].astype(str).str.replace('"', '')
 
-        checkout_date_valid = result_df['Book checkout'].apply(is_valid_date)
-        return_date_valid = result_df['Book Returned'].apply(is_valid_date)
-        result_df['valid_record'] = result_df['valid_record'] & checkout_date_valid & return_date_valid
+        # -----------------------------
+        # Metrics collection helpers
+        # -----------------------------
+        drop_events = []
 
+        def log_drops(df: pd.DataFrame, mask: pd.Series, step: str, reason: str):
+            """
+            Append dropped rows (where mask == True) into drop_events with metadata.
+            """
+            dropped = df.loc[mask].copy()
+            if dropped.empty:
+                return
+
+            dropped.insert(0, "row_index", dropped.index)
+            dropped.insert(1, "rule_step", step)
+            dropped.insert(2, "drop_reason", reason)
+            drop_events.append(dropped)
+
+        # -----------------------------
+        # Step 1: Drop fully empty rows
+        # -----------------------------
+        print("Step 1: Removing empty rows")
+        empty_mask = input_df.isna().all(axis=1)
+        log_drops(input_df, empty_mask, "Step 1", "Dropped: empty row (all columns null/NaN)")
+        step1_df = input_df.loc[~empty_mask].copy()
+
+        # -----------------------------
+        # Step 2: Drop duplicates
+        # -----------------------------
+        print("Step 2: Removing duplicated rows")
+        dup_mask = step1_df.duplicated(keep="first")
+        log_drops(step1_df, dup_mask, "Step 2", "Dropped: duplicate row (keeping first occurrence)")
+        step2_df = step1_df.loc[~dup_mask].copy()
+
+        result_df = step2_df
+
+        # -----------------------------
+        # Step 3: Handle NaN Values (Customer ID required)
+        # -----------------------------
+        print("Step 3: Dropping rows missing Customer ID")
+        missing_customer_id_mask = result_df["Customer ID"].isna()
+        log_drops(result_df, missing_customer_id_mask, "Step 3", "Dropped: missing Customer ID")
+        result_df = result_df.loc[~missing_customer_id_mask].copy()
+
+        # -----------------------------
+        # Step 4: Handle invalid date records
+        # -----------------------------
+        print("Step 4: Dropping rows with invalid dates")
+        result_df["Book checkout"] = result_df["Book checkout"].astype(str).str.replace('"', '')
+        result_df["Book Returned"] = result_df["Book Returned"].astype(str).str.replace('"', '')
+
+        checkout_valid = result_df["Book checkout"].apply(is_valid_date)
+        returned_valid = result_df["Book Returned"].apply(is_valid_date)
+
+        invalid_checkout_mask = ~checkout_valid
+        invalid_return_mask = ~returned_valid
+
+        log_drops(result_df, invalid_checkout_mask, "Step 4", "Dropped: invalid Book checkout date (expected dd/mm/YYYY)")
+        log_drops(result_df, invalid_return_mask, "Step 4", "Dropped: invalid Book Returned date (expected dd/mm/YYYY)")
+
+        # drop any invalid date rows
+        valid_dates_mask = checkout_valid & returned_valid
+        result_df = result_df.loc[valid_dates_mask].copy()
+
+        # -----------------------------
+        # Step 5: Standardise text space in book title
+        # -----------------------------
         print("Step 5: Standardise text space in book title")
-        result_df['Books'] = result_df['Books'].astype(str).str.strip()
+        result_df["Books"] = result_df["Books"].astype(str).str.strip()
 
-        print("Exporting valid records to CSV")
-        valid_data = result_df[result_df['valid_record'] == True].copy()
-        valid_data = valid_data.drop(columns=['valid_record'])
-        valid_data = enrich_library_books_data(valid_data, ai_api_key)
+        # -----------------------------
+        # Export valid records
+        # -----------------------------
+        print("Enriching and exporting valid records to CSV")
+        valid_data = enrich_library_books_data(result_df, ai_api_key)
         valid_data.to_csv(output_file_path, index=False)
 
         if db_path:
             save_df_to_sqlite(valid_data, db_path, "books")
 
-        return valid_data
+        # -----------------------------
+        # Build + export metrics_df
+        # -----------------------------
+        metrics_df = pd.concat(drop_events, ignore_index=True) if drop_events else pd.DataFrame(
+            columns=["row_index", "rule_step", "drop_reason"]
+        )
+
+        if metrics_output_file_path:
+            metrics_df.to_csv(metrics_output_file_path, index=False)
+            print(f"Exported {len(metrics_df)} dropped-row records to {metrics_output_file_path}")
+
+        if db_path and not metrics_df.empty:
+            save_df_to_sqlite(metrics_df, db_path, "books_dropped_records")
+
+        return valid_data, metrics_df
+
     except Exception as e:
         print(e)
-        return None
+        return None, None
 
 def main():
     """
@@ -169,6 +247,7 @@ def main():
     parser.add_argument("--customers-output", required=True, help="Path to customers output file")
     parser.add_argument("--books-input", required=True, help="Path to books input file")
     parser.add_argument("--books-output", required=True, help="Path to books output file")
+    parser.add_argument("--books-metrics-output", required=True, help="Path to books dropped-records metrics CSV")
     parser.add_argument("--db-path", default=os.getenv("DB_PATH", "/data/library.db"), help="SQLite DB path")
     args = parser.parse_args()
 
@@ -179,7 +258,13 @@ def main():
     cleanse_library_customers_data(args.customers_input, args.customers_output, db_path=args.db_path)
 
     print("Starting books data cleanse")
-    cleanse_library_books_data(args.books_input, args.books_output, args.ai_api_key, db_path=args.db_path)
+    valid_books_df, metrics_df = cleanse_library_books_data(
+        args.books_input,
+        args.books_output,
+        args.ai_api_key,
+        db_path=args.db_path,
+        metrics_output_file_path=args.books_metrics_output
+    )
 
     print("Data cleansing completed!")
 

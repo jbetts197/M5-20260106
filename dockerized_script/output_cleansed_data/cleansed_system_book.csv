@@ -1,9 +1,8 @@
 Id,Books,Book checkout,Book Returned,Days allowed to borrow,Customer ID,days_borrowed,book_description
-1.0,Catcher in the Rye,20/02/2023,25/02/2023,2 weeks,1.0,5,"**Holden Caulfield, a disillusioned 16-year-old expelled from prep school, narrates his raw, cynical experiences wandering New York City, grappling with grief, ""phoniness,"" and preserving innocence.**"
-2.0,Lord of the rings the two towers,24/03/2023,21/03/2023,2 weeks,2.0,-3,"**Concise Description (under 60 words):**
-
-The fractured Fellowship continues their quests. Frodo and Sam, guided by the treacherous Gollum, journey towards Mordor. Meanwhile, Aragorn, Legolas, and Gimli race to rescue captured hobbits Merry and Pippin"
-3.0,Lord of the rings the return of the kind,29/03/2023,25/03/2023,2 weeks,3.0,-4,"**Frodo and Sam reach Mount Doom for a final confrontation with Sauron, while Aragorn leads the forces of Middle-earth against Mordor's armies, culminating in the War of the Ring's end and profound change.** (22 words)"
+1.0,Catcher in the Rye,20/02/2023,25/02/2023,2 weeks,1.0,5,"**Concise Description:**  
+*The Catcher in the Rye* follows disillusioned teenager Holden Caulfield after his expulsion from prep school. Wandering New York City, he critiques adult ""phoniness"" while grappling with innocence, loss, and his own mental turmoil. Told in"
+2.0,Lord of the rings the two towers,24/03/2023,21/03/2023,2 weeks,2.0,-3,
+3.0,Lord of the rings the return of the kind,29/03/2023,25/03/2023,2 weeks,3.0,-4,
 4.0,The hobbit,02/04/2023,25/03/2023,2 weeks,4.0,-8,
 5.0,Dune,02/04/2023,25/03/2023,2 weeks,5.0,-8,
 6.0,Little Women,02/04/2023,01/05/2023,2 weeks,1.0,29,

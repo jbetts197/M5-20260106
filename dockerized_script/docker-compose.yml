@@ -22,7 +22,9 @@ services:
         "--books-output",
         "/app/output_cleansed_data/cleansed_system_book.csv",
         "--db-path",
-        "/data/library.db"
+        "/data/library.db",
+        "--books-metrics-output",
+        "/app/output_cleansed_data/metrics.csv"
       ]
 
   sqlite:
@@ -33,6 +35,13 @@ services:
     stdin_open: true
     tty: true
     entrypoint: sh
+
+  streamlit:
+    build: ./streamlit/
+    volumes:
+      - ./data:/data
+    ports:
+      - "8502:8502"
 
   sqlite_web:
       image: coleifer/sqlite-web:latest
